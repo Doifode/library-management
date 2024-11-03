@@ -21,38 +21,6 @@ export const registerUser = async (req, res, next) => {
     }
 };
 
-export const getUsersByShopId = async (req, res, next) => {
-    try {
-        const shopId = req.params.shopId;
-        const userId = req.user.userId
-        const getUsersByShopIdQuery = `CALL GET_USERS_BY_SHOP_ID(${shopId},${userId})`
-        DB.query(getUsersByShopIdQuery, (error, result) => {
-            if (error) return next(error);
-            return ResponseHandler.success(res, "", 200, result[0])
-        });
-    } catch (error) {
-        return next();
-    }
-};
-
-export const getUserById = async (req, res, next) => {
-    try {
-        const userId = req.query.userId;
-        const shopId = req.query.shopId;
-        const getUserByIdQuery = `CALL GET_USER_BY_ID(${userId},${shopId})`
-        DB.query(getUserByIdQuery, (error, result) => {
-            if (error) return next(error);
-            if (result[0].length) {
-                return ResponseHandler.success(res, "", 200, result[0][0])
-            } else {
-                return ResponseHandler.error(res, "User not found.", 200)
-            }
-        });
-
-    } catch (error) {
-        next(error)
-    }
-};
 
 export const updateUser = async (req, res, next) => {
     try {

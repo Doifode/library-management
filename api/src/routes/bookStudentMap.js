@@ -1,10 +1,11 @@
 import express from "express";
 import { deleteBookById, getBookById, registerBook, updateBook } from "../controllers/book.js";
+import { deleteStudentBookMapById, registerStudentBookMap } from "../controllers/bookStudentMap.js";
 const router = express.Router();
 
-router.post("/", registerBook);
+router.post("/", registerStudentBookMap);
 router.put("/", updateBook);
-router.get("/:bookId", getBookById);
-router.delete("/:bookId", deleteBookById);
+router.get("/:studentBookMapId", getBookById);
+router.delete("/:studentBookMapId", deleteStudentBookMapById);
 
 export default router;

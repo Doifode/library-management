@@ -5,7 +5,9 @@ import authRouter from "./routes/auth.js";
 import bookRouter from "./routes/book.js";
 import userRouter from "./routes/user.js";
 import studentRoute from "./routes/students.js";
+import studentBookMapRoute from "./routes/bookStudentMap.js";
 import { errorHandler } from "./utils/ErrorHandler.js";
+import { isAuthenticated } from "./utils/middlewares/isAuthenticated.js"
 env.configDotenv({ path: "./env" });
 
 // import statements 
@@ -13,10 +15,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/user/", userRouter);
+app.use("/api/user/", isAuthenticated, userRouter);
 app.use("/api/auth/", authRouter);
-app.use("/api/book/", bookRouter);
-app.use("/api/student/", studentRoute);
+app.use("/api/book/", isAuthenticated, bookRouter);
+app.use("/api/student/", isAuthenticated, studentRoute);
+app.use("/api/studentBookMap/", isAuthenticated, studentBookMapRoute);
 
 app.use(errorHandler);
 

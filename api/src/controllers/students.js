@@ -13,7 +13,7 @@ export const registerStudent = async (req, res, next) => {
         const { firstName, lastName, prn, email, mobile, password ,username} = req.body;
         const hashPassword = bcryptjs.hashSync(password, 10);
 
-        const registerStudentQuery = `CALL REGISTER_STUDENT( '${firstName}','${lastName}','${prn}','${email}','${mobile}','${username}','${password}')`;
+        const registerStudentQuery = `CALL REGISTER_STUDENT( '${firstName}','${lastName}','${prn}','${email}','${mobile}','${username}','${hashPassword}')`;
         DB.query(registerStudentQuery, (error, result) => {
             if (error) return next(error);
             return ResponseHandler.success(res, "Student registered successfully!", 200,);
@@ -23,14 +23,12 @@ export const registerStudent = async (req, res, next) => {
     }
 };
 
-export const getStudentsByShopId = async (req, res, next) => {
+export const getAllStudents = async (req, res, next) => {
     try {
-        const shopId = req.params.shopId;
-        const StudentId = req.Student.StudentId
-        const getStudentsByShopIdQuery = `CALL GET_StudentS_BY_SHOP_ID(${shopId},${StudentId})`
+        const getStudentsByShopIdQuery = `SELECT * FROM STUDENTS`
         DB.query(getStudentsByShopIdQuery, (error, result) => {
             if (error) return next(error);
-            return ResponseHandler.success(res, "", 200, result[0])
+            return ResponseHandler.success(res, "", 200, result)
         });
     } catch (error) {
         return next();
@@ -39,8 +37,8 @@ export const getStudentsByShopId = async (req, res, next) => {
 
 export const getStudentById = async (req, res, next) => {
     try {
-        const StudentId = req.params.StudentId;
-        const getStudentByIdQuery = `SELECT * FROM StudentS WHERE StudentID = ${StudentId}`
+        const studentId = req.params.studentId;
+        const getStudentByIdQuery = `SELECT * FROM STUDENTS WHERE STUDENTID = ${studentId}`
         DB.query(getStudentByIdQuery, (error, result) => {
             if (error) return next(error);
             if (result.length) {
@@ -57,8 +55,8 @@ export const getStudentById = async (req, res, next) => {
 
 export const deleteStudentById = async (req, res, next) => {
     try {
-        const StudentId = req.params.StudentId;
-        const getStudentByIdQuery = ` CALL DELETE_Student(${StudentId})`
+        const studentId = req.params.studentId;
+        const getStudentByIdQuery = ` CALL DELETE_STUDENT('${studentId}')`
         DB.query(getStudentByIdQuery, (error, result) => {
             if (error) return next(error);
             if (result.affectedRows) {

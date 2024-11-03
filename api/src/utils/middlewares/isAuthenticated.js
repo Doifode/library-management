@@ -13,7 +13,7 @@ export const isAuthenticated = async (req, res, next) => {
             return next();
         }
 
-        const isAuthenticatedQuery = `CALL IS_AUTHENTICATED('${decodeToken.userId}',${decodeToken.shopId})`
+        const isAuthenticatedQuery = `CALL IS_AUTHENTICATED('${decodeToken.userId}')`
         DB.query(isAuthenticatedQuery, (error, result) => {
             if (error) return next(error);
             if (result[0].length) {
