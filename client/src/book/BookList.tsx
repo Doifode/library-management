@@ -77,10 +77,10 @@ const BookList = () => {
                                     <Card.Subtitle className="mb-2 text-muted">by {book.author}</Card.Subtitle>
                                     <Card.Text>Quantity: {book.quantity}</Card.Text>
                                     <div className="d-flex justify-content-between">
-                                        <Button variant="primary" onClick={() => handleEditBook(book)}>
+                                        <Button hidden={!userDetails} variant="primary" onClick={() => handleEditBook(book)}>
                                             Edit
                                         </Button>
-                                        <Button variant="danger" onClick={() => handleDeleteBook(book.bookId)}>
+                                        <Button hidden={!userDetails} variant="danger" onClick={() => handleDeleteBook(book.bookId)}>
                                             Delete
                                         </Button>
                                     </div>
