@@ -8,8 +8,8 @@ export const registerBook = async (req, res, next) => {
         if (!error.success) {
             return ResponseHandler.error(res, error.error.issues[0].message, 400)
         }
-        const { bookName, author, quantity } = req.body;
-        const registerBookQuery = `CALL REGISTER_BOOK( '${bookName}','${author}','${quantity}')`;
+        const { bookName, author, quantity, image } = req.body;
+        const registerBookQuery = `CALL REGISTER_BOOK( '${bookName}','${author}','${quantity}','${image}')`;
         DB.query(registerBookQuery, (error, result) => {
             if (error) return next(error);
             return ResponseHandler.success(res, "Book registered successfully!", 200,);
@@ -19,19 +19,7 @@ export const registerBook = async (req, res, next) => {
     }
 };
 
-export const getBooksByShopId = async (req, res, next) => {
-    try {
-        const shopId = req.params.shopId;
-        const BookId = req.Book.BookId
-        const getBooksByShopIdQuery = `CALL GET_BookS_BY_SHOP_ID(${shopId},${BookId})`
-        DB.query(getBooksByShopIdQuery, (error, result) => {
-            if (error) return next(error);
-            return ResponseHandler.success(res, "", 200, result[0])
-        });
-    } catch (error) {
-        return next();
-    }
-};
+ 
 
 export const getBookById = async (req, res, next) => {
     try {
@@ -41,6 +29,23 @@ export const getBookById = async (req, res, next) => {
             if (error) return next(error);
             if (result.length) {
                 return ResponseHandler.success(res, "", 200, result[0])
+            } else {
+                return ResponseHandler.error(res, "Book not found.", 200)
+            }
+        });
+
+    } catch (error) {
+        next(error)
+    }
+};
+
+export const getAllBooks = async (req, res, next) => {
+    try {
+        const getBookByIdQuery = `SELECT * FROM BOOKS WHERE QUANTITY > 0`
+        DB.query(getBookByIdQuery, (error, result) => {
+            if (error) return next(error);
+            if (result.length) {
+                return ResponseHandler.success(res, "", 200, result)
             } else {
                 return ResponseHandler.error(res, "Book not found.", 200)
             }

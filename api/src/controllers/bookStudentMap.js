@@ -19,10 +19,9 @@ export const registerStudentBookMap = async (req, res, next) => {
     }
 };
 
-export const getStudentBookMapById = async (req, res, next) => {
+export const getAllStudentBookMap = async (req, res, next) => {
     try {
-        const StudentBookMapId = req.params.StudentBookMapId;
-        const getStudentBookMapByIdQuery = `SELECT * FROM StudentBookMapS WHERE StudentBookMapID = ${StudentBookMapId}`
+        const getStudentBookMapByIdQuery = `CALL GET_ALL_ASSIGNED_BOOK()`
         DB.query(getStudentBookMapByIdQuery, (error, result) => {
             if (error) return next(error);
             if (result.length) {
@@ -61,8 +60,8 @@ export const updateStudentBookMap = async (req, res, next) => {
         if (!error.success) {
             return ResponseHandler.error(res, error.error.issues[0].message, 400)
         }
-        const { author, quantity, StudentBookMapName, StudentBookMapId, } = req.body;
-        const registerStudentBookMapQuery = `CALL UPDATE_BOOK_ASSIGNMENT(${StudentBookMapId}, '${StudentBookMapName}','${author}','${quantity}')`;
+        const { bookId, studentId, studentBookMapId, } = req.body;
+        const registerStudentBookMapQuery = `CALL UPDATE_ASSIGNMENT( ${studentBookMapId},'${bookId}','${studentId}' )`;
         DB.query(registerStudentBookMapQuery, (error, result) => {
             if (error) return next(error);
             if (result.affectedRows) {

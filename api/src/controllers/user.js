@@ -14,7 +14,7 @@ export const registerUser = async (req, res, next) => {
         const registerUserQuery = `CALL REGISTER_USER( '${mobile}','${email}','${userName}','${hashPassword}')`;
         DB.query(registerUserQuery, (error, result) => {
             if (error) return next(error);
-            return ResponseHandler.success(res, "User registered successfully!", 200, `${activateUrl}/${result[0][0].activationToken}`);
+            return ResponseHandler.success(res, "User registered successfully!", 200,);
         });
     } catch (error) {
         return next(error)
