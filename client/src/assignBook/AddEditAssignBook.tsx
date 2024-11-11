@@ -81,7 +81,7 @@ const AddEditAssignBook: React.FC<AddEditAssignBookProps> = ({ initialValues, se
                         <Label>Student Name</Label>
                         <Autocomplete
                             options={students}
-                            value={students.find((item) => item.studentId === initialValues.studentId) || null}
+                            value={students.find((item) => item.studentId === (initialValues.studentId || formik.values.studentId)) || null}
                             getOptionLabel={(option: IStudents) => `${option.firstName} ${option.lastName}`}
                             onChange={(_, value) => formik.setFieldValue('studentId', value ? value.studentId : '')}
                             renderInput={(params) => (
@@ -103,7 +103,7 @@ const AddEditAssignBook: React.FC<AddEditAssignBookProps> = ({ initialValues, se
                         <Label>Book Name</Label>
                         <Autocomplete
                             options={books}
-                            value={books.find((item) => item.bookId === initialValues.bookId) || null}
+                            value={books.find((item) => item.bookId === (initialValues.bookId || formik.values.bookId)) || null}
                             getOptionLabel={(option: IBooks) => option.bookName}
                             onChange={(_, value) => formik.setFieldValue('bookId', value ? value.bookId : '')}
                             renderInput={(params) => (
